@@ -23,24 +23,26 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y virtualbox
 
-        # Baixar a versão 2.4.3-1 do Vagrant (corrigido)
-        curl -LO https://releases.hashicorp.com/vagrant/2.4.3/vagrant_2.4.3-1_amd64.deb
+        # Baixar a versão 2.4.3-1 do Vagrant
+        if [ ! -f vagrant_2.4.3-1_amd64.deb ]; then
+          curl -LO https://releases.hashicorp.com/vagrant/2.4.3/vagrant_2.4.3-1_amd64.deb
         
-        # Verificar se o arquivo foi baixado corretamente
-        ls -l vagrant_2.4.3-1_amd64.deb
+          # Verificar se o arquivo foi baixado corretamente
+          ls -l vagrant_2.4.3-1_amd64.deb
         
-        # Instalar o pacote .deb do Vagrant
-        sudo dpkg -i vagrant_2.4.3-1_amd64.deb
+          # Instalar o pacote .deb do Vagrant
+          sudo dpkg -i vagrant_2.4.3-1_amd64.deb
         
-        # Corrigir dependências caso necessário
-        sudo apt-get install -f
+          # Corrigir dependências caso necessário
+          sudo apt-get install -f
+        fi
 
     # Cache do diretório .vagrant (impede recriação das máquinas a cada execução)
     - name: Cache Vagrant directory
       uses: actions/cache@v4
       with:
         path: .vagrant
-        key: ${{ runner.os }}-vagrant-${{ hashFiles('Vagrantfile') }}
+        key: ${{ runner.os }}-vagrant-${{ hashFiles('Vagrantfile', '**/*.sh') }}
         restore-keys: |
           ${{ runner.os }}-vagrant-
 
@@ -48,3 +50,8 @@ jobs:
       run: |
         # Inicializa e sobe as VMs definidas no Vagrantfile
         vagrant up --provider=virtualbox
+
+    # Passo para destruir as máquinas após a execução
+    - name: Destroy Vagrant machines
+      run: |
+        vagrant destroy -f  # O "-f" força a destruição sem pedir confirmação
