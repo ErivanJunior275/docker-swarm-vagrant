@@ -1,13 +1,19 @@
 #!/bin/bash
 # Iniciar o Docker Swarm no nó manager
-sudo docker swarm init --advertise-addr=10.172.236.100
+sudo docker swarm init --advertise-addr=192.168.56.56
 
 # Obter o token do worker e criar o script para ser usado nos nós worker
-# sudo docker swarm join-token worker | grep docker >> /vagrant/worker.sh
-sudo docker swarm join-token worker -q >> /vagrant/worker.sh
+sudo docker swarm join-token worker | grep docker >> /vagrant/worker.sh
+# sudo docker swarm join-token worker -q >> /vagrant/worker.sh
 
 # Criar o volume Docker
 sudo docker volume create sharedfiles
+
+# Lista os volumes criados
+sudo docker volume ls
+
+# Inspeciona o local que o volume foi montado
+docker volume inspect sharedfiles
 
 # Instalar o servidor NFS
 sudo apt install -y nfs-kernel-server
@@ -19,7 +25,7 @@ echo "/var/lib/docker/volumes/sharedfiles/_data *(rw,sync,subtree_check)" | sudo
 sudo exportfs -ar
 
 # Reiniciar o serviço NFS depois de modificar (somente se necessário)
-# sudo systemctl restart nfs-kernel-server
+sudo systemctl restart nfs-kernel-server
 
 # Listar as configurações de exportação
 exportfs -v
