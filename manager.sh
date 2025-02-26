@@ -1,6 +1,6 @@
 #!/bin/bash
 # Iniciar o Docker Swarm no nó manager
-sudo docker swarm init --advertise-addr=10.172.236.100
+sudo docker swarm init --advertise-addr=192.168.56.56
 
 # Obter o token do worker e criar o script para ser usado nos nós worker
 # sudo docker swarm join-token worker | grep docker >> /vagrant/worker.sh
