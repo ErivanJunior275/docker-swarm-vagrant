@@ -23,8 +23,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y virtualbox
         # Baixar e instalar o Vagrant
-        curl -O https://releases.hashicorp.com/vagrant/2.3.4/vagrant_2.3.4_linux_amd64.deb
-        sudo dpkg -i vagrant_2.3.4_linux_amd64.deb
+        curl -O https://releases.hashicorp.com/vagrant/2.4.3/vagrant_2.4.3-1_amd64.deb
+        sudo dpkg -i vagrant_2.4.3-1_amd64.deb
         sudo apt-get install -f # Corrige dependências quebradas, se necessário
 
     - name: Initialize and start Vagrant
