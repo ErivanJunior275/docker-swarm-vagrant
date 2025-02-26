@@ -17,11 +17,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up VirtualBox and Vagrant
+    - name: Install dependencies
       run: |
+        # Instalar dependências do VirtualBox e Vagrant
         sudo apt-get update
-        sudo apt-get install -y virtualbox vagrant
+        sudo apt-get install -y virtualbox
+        # Baixar e instalar o Vagrant
+        curl -O https://releases.hashicorp.com/vagrant/2.3.4/vagrant_2.3.4_linux_amd64.deb
+        sudo dpkg -i vagrant_2.3.4_linux_amd64.deb
+        sudo apt-get install -f # Corrige dependências quebradas, se necessário
 
     - name: Initialize and start Vagrant
       run: |
+        # Inicializa e sobe as VMs definidas no Vagrantfile
         vagrant up --provider=virtualbox
