@@ -9,6 +9,9 @@ sudo docker swarm join-token worker | grep docker >> /vagrant/worker.sh
 # Criar o volume Docker
 sudo docker volume create sharedfiles
 
+# Lista os volumes criados
+sudo docker volume ls
+
 # Instalar o servidor NFS
 sudo apt install -y nfs-kernel-server
 
@@ -19,7 +22,7 @@ echo "/var/lib/docker/volumes/sharedfiles/_data *(rw,sync,subtree_check)" | sudo
 sudo exportfs -ar
 
 # Reiniciar o serviço NFS depois de modificar (somente se necessário)
-# sudo systemctl restart nfs-kernel-server
+sudo systemctl restart nfs-kernel-server
 
 # Listar as configurações de exportação
 exportfs -v
