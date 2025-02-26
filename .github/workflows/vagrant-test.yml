@@ -1,0 +1,27 @@
+name: Test Docker Swarm with Vagrant
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  vagrant:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up VirtualBox and Vagrant
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y virtualbox vagrant
+
+    - name: Initialize and start Vagrant
+      run: |
+        vagrant up --provider=virtualbox
