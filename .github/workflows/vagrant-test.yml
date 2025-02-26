@@ -19,7 +19,7 @@ jobs:
 
     # Cache do arquivo do Vagrant (.deb)
     - name: Cache Vagrant package
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ~/.cache/vagrant
         key: ${{ runner.os }}-vagrant-${{ hashFiles('**/vagrant_2.4.3-1_amd64.deb') }}
@@ -41,7 +41,7 @@ jobs:
 
     # Cache do diretório .vagrant (impede recriação das máquinas a cada execução)
     - name: Cache Vagrant directory
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: .vagrant
         key: ${{ runner.os }}-vagrant-${{ hashFiles('Vagrantfile') }}
