@@ -14,8 +14,6 @@ sudo ufw reload
 
 sudo apt install -y nfs-common
 
-# sudo mount -t nfs 10.172.236.100:/var/lib/docker/volumes/sharedfiles/_data /var/lib/docker/volumes/sharedfiles/_data
-
 # Tentar montar o volume NFS
 MOUNT_DIR="/var/lib/docker/volumes/sharedfiles/_data"
 if [ ! -d "$MOUNT_DIR" ]; then
@@ -23,8 +21,16 @@ if [ ! -d "$MOUNT_DIR" ]; then
   sudo mkdir -p $MOUNT_DIR
 fi
 
+# sudo mount -t nfs 10.172.236.100:/var/lib/docker/volumes/sharedfiles/_data /var/lib/docker/volumes/sharedfiles/_data
+
+# for i in {1..5}; do
+#   sudo mount -t nfs 192.168.56.56:/var/lib/docker/volumes/sharedfiles/_data /var/lib/docker/volumes/sharedfiles/_data && break
+#   echo "Tentando novamente o mount... tentativa $i"
+#   sleep 15
+# done
+
 for i in {1..5}; do
-  sudo mount -t nfs 192.168.56.56:/var/lib/docker/volumes/sharedfiles/_data /var/lib/docker/volumes/sharedfiles/_data && break
+  sudo mount -t nfs 192.168.56.56:$MOUNT_DIR $MOUNT_DIR && break
   echo "Tentando novamente o mount... tentativa $i"
   sleep 15
 done
