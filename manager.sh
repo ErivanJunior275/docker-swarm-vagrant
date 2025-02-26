@@ -12,6 +12,9 @@ sudo docker volume create sharedfiles
 # Lista os volumes criados
 sudo docker volume ls
 
+# Inspeciona o local que o volume foi montado
+docker volume inspect sharedfiles
+
 # Instalar o servidor NFS
 sudo apt install -y nfs-kernel-server
 
