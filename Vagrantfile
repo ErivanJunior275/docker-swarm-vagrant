@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
         vb.cpus = conf["cpu"]
         
       end
-      machine.vm.provision "shell", path: "docker.sh"
+      machine.vm.provision "shell", path: "bootstrap.sh"
       
       if "#{name}" == "manager"
         machine.vm.provision "shell", path: "manager.sh"
