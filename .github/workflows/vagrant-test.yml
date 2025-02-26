@@ -15,36 +15,32 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    # Cache do arquivo do Vagrant (.deb)
-    - name: Cache Vagrant package
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/vagrant
-        key: ${{ runner.os }}-vagrant-${{ hashFiles('**/vagrant_2.4.3-1_amd64.deb') }}
-        restore-keys: |
-          ${{ runner.os }}-vagrant-
-
-    # Instalar dependências (apenas se o Vagrant não for cacheado)
     - name: Install dependencies
       run: |
+        # Instalar dependências do Vagrant e VirtualBox
         sudo apt-get update
         sudo apt-get install -y virtualbox
 
-        # Baixar e instalar o Vagrant apenas se não estiver cacheado
-        if [ ! -f vagrant_2.4.3-1_amd64.deb ]; then
-          curl -LO https://releases.hashicorp.com/vagrant/2.4.3/vagrant_2.4.3-1_amd64.deb
-          sudo dpkg -i vagrant_2.4.3-1_amd64.deb
-          sudo apt-get install -f
-        fi
+        # Baixar a versão 2.4.3-1 do Vagrant (corrigido)
+        curl -LO https://releases.hashicorp.com/vagrant/2.4.3/vagrant_2.4.3-1_amd64.deb
+        
+        # Verificar se o arquivo foi baixado corretamente
+        ls -l vagrant_2.4.3-1_amd64.deb
+        
+        # Instalar o pacote .deb do Vagrant
+        sudo dpkg -i vagrant_2.4.3-1_amd64.deb
+        
+        # Corrigir dependências caso necessário
+        sudo apt-get install -f
 
     # Cache do diretório .vagrant (impede recriação das máquinas a cada execução)
     - name: Cache Vagrant directory
       uses: actions/cache@v4
       with:
         path: .vagrant
-        key: ${{ runner.os }}-vagrant-${{ hashFiles('Vagrantfile', '**/*.sh') }}
+        key: ${{ runner.os }}-vagrant-${{ hashFiles('Vagrantfile') }}
         restore-keys: |
           ${{ runner.os }}-vagrant-
 
