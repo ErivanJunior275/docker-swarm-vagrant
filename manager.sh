@@ -3,7 +3,7 @@
 sudo docker swarm init --advertise-addr=10.172.236.100
 
 # Obter o token do worker e criar o script para ser usado nos nós worker
-sudo docker swarm join-token worker | grep docker > /vagrant/worker.sh
+sudo docker swarm join-token worker | grep docker >> /vagrant/worker.sh
 
 # Criar o volume Docker
 sudo docker volume create sharedfiles
